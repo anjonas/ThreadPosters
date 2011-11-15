@@ -21,14 +21,13 @@ class ThreadPosters
   
   def save_posters
     doc = Nokogiri::HTML(RestClient.get(@url))
-	puts "starting"
 	names = doc.css('div[class = "username_container"] strong')
 	@db.transaction
 	  names.each do |name|
 		input = name.text
         @db.execute("insert into posters (name) values (?)", input)
 	  end
-	db.commit
+	@db.commit
   end
   
   attr_reader :url, :db
